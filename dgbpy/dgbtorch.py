@@ -148,7 +148,7 @@ def getModelsByInfo( infos ):
     if isinstance(shape,int):
         ndim = 1
     else:
-        ndim = len(shape)-1
+        ndim = len(shape) - shape.count(1)
     modelstypes = getModelsByType( infos[dgbkeys.learntypedictstr],
                                    infos[dgbhdf5.classdictstr], 
                                    ndim )                             
@@ -227,13 +227,13 @@ def onnx_from_torch(model, infos):
     predtype = tc.DataPredType.Continuous
     nroutputs = dgbhdf5.getNrOutputs( infos )
   input_size = torch_dict['batch']
-  if model.__class__.__name__ == 'UNet': 
+  if model.__class__.__name__ == 'UNet' or 'UNet_VGG19': 
     input_size = 1
   if dims  == 3:
     dummy_input = torch.randn(input_size, model_shape[0], model_shape[1], model_shape[2], model_shape[3])
   elif dims == 2:
     dummy_input = torch.randn(input_size, model_shape[0], model_shape[1], model_shape[2])
-  elif dims == 1:
+  elif dims == 1 or dims == 0:
     dummy_input = torch.randn(input_size, model_shape[0], model_shape[1])
   if model.__class__.__name__ == 'Sequential':
     from dgbpy.mlmodel_torch_dGB import ResNet18
@@ -247,6 +247,9 @@ def onnx_from_torch(model, infos):
   elif model.__class__.__name__ == 'UNet':
     from dgbpy.torch_classes import UNet
     model_instance = UNet(out_channels=nroutputs, dim=dims, in_channels=attribs, n_blocks=model.n_blocks)
+  elif model.__class__.__name__ == 'UNet_VGG19':
+    from dgbpy.torch_classes import UNet_VGG19
+    model_instance = UNet_VGG19(model_shape, nroutputs, attribs)
   elif model.__class__.__name__ == 'GraphModule':
     model_instance = torch.jit.trace(model.cpu(), dummy_input)
   model_instance.load_state_dict(model.state_dict())

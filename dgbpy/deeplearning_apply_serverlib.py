@@ -148,7 +148,7 @@ class ModelApplier:
                 raise TypeError
 
         if self.scaler_ != None:
-            dgbscikit.scale( samples, self.scaler_ )
+            samples = dgbscikit.scale( samples, self.scaler_ )
         if self.needtranspose_:
             samples = np.transpose( samples, axes=(0,1,4,3,2) )
         return samples
@@ -164,7 +164,7 @@ class ModelApplier:
         
         if dgbhdf5.unscaleOutput( self.info_ ):
             if self.scaler_:
-                dgbscikit.unscale( samples, self.scaler_ )
+                samples = dgbscikit.unscale( samples, self.scaler_ )
 
         return samples
 
@@ -188,6 +188,8 @@ class ModelApplier:
         inpshape = self.info_[dgbkeys.inpshapedictstr]
         nrzin = inp.shape[-1]
         vertical =  isinstance(inpshape,int)
+        self.isflat_inlinemodel_ = False
+        self.isflat_xlinemodel_ = False
         self.is2dinp_ = False
         self.is3dmodel_ = False
         self.swapaxes_ = False

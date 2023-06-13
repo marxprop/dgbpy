@@ -9,12 +9,26 @@
 #
 
 from datetime import datetime, timedelta
+from typing import Iterable
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.utils import Sequence, to_categorical
 
 import dgbpy.keystr as dgbkeys
 from dgbpy import hdf5 as dgbhdf5
+
+def model_info( modelfnm ):
+  from dgbpy.dgbkeras import load
+  model = load( modelfnm, False )
+  mi = model_info_dict( model )
+  return (mi['input_shape'], mi['output_shape'], mi['data_format'])
+
+def model_info_dict( keras_model ):
+  minfo = {}
+  minfo['input_shape'] = keras_model.input_shape
+  minfo['output_shape'] = keras_model.output_shape
+  minfo['data_format'] = next((layer.data_format if hasattr(layer, 'data_format') else 'channels_last' for layer in keras_model.layers))
+  return minfo
 
 class TrainingSequence(Sequence):
   def __init__(self,trainbatch,forvalidation,model,exfilenm=None,batch_size=1,\
@@ -181,6 +195,12 @@ class DimType(Enum):
   D3 = 3
   Any = 4
 
+  @classmethod
+  def is_valid(cls, dim_type):
+    if not isinstance(dim_type, Iterable):
+      return isinstance(dim_type, cls)
+    return all(isinstance(dim_type, cls) for dim_type in dim_type)
+
 class UserModel(ABC):
   """Abstract base class for user defined Keras machine learning models
 
@@ -316,11 +336,12 @@ class UserModel(ABC):
 
     """
     if isinstance(pred_type, DataPredType) and isinstance(out_type, OutputType) and\
-       isinstance(dim_type, DimType) :
+       DimType.is_valid(dim_type):
       return [model for model in UserModel.mlmodels \
           if (model.predtype == pred_type or pred_type == DataPredType.Any) and\
-	     (model.outtype == out_type or out_type == OutputType.Any) and\
-             (model.dimtype == dim_type or model.dimtype == DimType.Any)]
+	           (model.outtype == out_type or out_type == OutputType.Any) and\
+             (model.dimtype == dim_type or model.dimtype == DimType.Any or\
+                (isinstance(model.dimtype, Iterable) and dim_type in model.dimtype))]
     return None
 
   @staticmethod

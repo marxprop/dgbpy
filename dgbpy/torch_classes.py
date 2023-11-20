@@ -527,7 +527,9 @@ class Trainer:
 
     def compute_loss_func(self):
         if self.classification:
-            self.loss = self.criterion(self.out, self.target.squeeze(1))
+	    if self.criterion == torch.nn.BCELoss():
+		self.loss = self.criterion(self.out, self.target)
+            self.loss = self.criterion(self.out, self.target.squeeze(1)
             self.out = torch.argmax(self.out, axis=1)
         else:
             self.loss = self.criterion(self.out, self.target)

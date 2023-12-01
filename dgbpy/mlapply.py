@@ -184,6 +184,11 @@ def getScaledTrainingDataByInfo( infos, flatten=False, scale=True, ichunk=0, ifo
   for groupnm in groups:
     dsets = dgbmlio.getDatasetsByGroup( datasets, groupnm )
     ret = dgbmlio.getTrainingDataByInfo( infos, dsets )
+    indices = [i for i, arr in enumerate(ret[dgbkeys.ytraindictstr]) if np.all(arr == 0) or np.all(arr == -1)]
+    if len(indices) > 0:
+      ret[dgbkeys.xtraindictstr] = np.delete(ret[dgbkeys.xtraindictstr], indices, axis=0)
+      ret[dgbkeys.ytraindictstr] = np.delete(ret[dgbkeys.ytraindictstr], indices, axis=0)
+      infos[dgbkeys.trainseldicstr][ichunk] = [x for x in datasets if x not in indices]
     if scale and groupnm in infos[dgbkeys.inputdictstr]:
       scaler = infos[dgbkeys.inputdictstr][groupnm][dgbkeys.scaledictstr]
       if dgbkeys.xtraindictstr in ret:

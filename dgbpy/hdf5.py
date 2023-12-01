@@ -120,8 +120,8 @@ def isSeisClass( info ):
 
 def hasUnlabeled( info ):
   if isinstance(info, dict):
-    return info[withunlabeleddictstr]
-  return info == withunlabeleddictstr
+    return info[withunlabeledstr]
+  return info == withunlabeledstr
 
 def isLogInput( info ):
   if isinstance(info,dict):
@@ -589,7 +589,7 @@ def getInfo( filenm, quick ):
     exampledictstr: examples,
     inputdictstr: inputs,
     filedictstr: filenm,
-    withunlabeleddictstr: hasunlabels
+    withunlabeledstr: hasunlabels
   }
 
   if not quick:

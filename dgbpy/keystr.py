@@ -65,8 +65,6 @@ ytraindictstr = 'y_train'
 yvaliddictstr = 'y_validate'
 ypreddictstr = 'y_pred'
 zstepdictstr = 'zstep'
-withunlabeleddictstr = 'withunlabeled'
-
 
 # Value keys
 

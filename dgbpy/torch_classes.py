@@ -555,7 +555,10 @@ class Trainer:
     def compute_loss_func(self):
         if self.classification:
             self.loss = self.criterion(self.out, self.target.squeeze(1))
-            self.out = torch.argmax(self.out, axis=1)
+            if len(self.info[dgbkeys.classesdictstr]) == 2:
+                self.out = torch.round(self.out).int()
+            else:
+                self.out = torch.argmax(self.out, axis=1)
         else:
             self.loss = self.criterion(self.out, self.target)
 

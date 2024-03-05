@@ -32,14 +32,14 @@ jobs:
         python -m pip install onnxruntime
         python -m pip install onnx
         python -m pip install opencv-python
-    -name: Get test examplefiles
+    - name: Get test examplefiles
       run: |
         mkdir testdata
         cd testdata
-        !wget "https://github.com/OpendTect/OpendTect-ML-Dev/raw/main/webinars/2021-04-22/Examples/data/Log_-_Lithology_supervised_prediction.h5" -O "Log_-_Lithology_supervised_prediction.h5"
-        !wget "https://github.com/OpendTect/OpendTect-ML-Dev/raw/main/webinars/2021-04-22/Examples/data/Layers_input_2D.h5" -O "Layers_input_2D.h5"
-        !wget "https://github.com/OpendTect/OpendTect-ML-Dev/raw/main/webinars/2021-04-22/Examples/data/malenov_input_8x8x16_subsample_dBG.h5" -O "malenov_input_8x8x16_subsample_dBG.h5"
-        !wget "https://github.com/OpendTect/OpendTect-ML-Dev/raw/main/webinars/2021-04-22/Examples/data/Log_-_density.h5" -O "Log_-_density.h5"
+        wget "https://github.com/OpendTect/OpendTect-ML-Dev/raw/main/webinars/2021-04-22/Examples/data/Log_-_Lithology_supervised_prediction.h5" -O "Log_-_Lithology_supervised_prediction.h5"
+        wget "https://github.com/OpendTect/OpendTect-ML-Dev/raw/main/webinars/2021-04-22/Examples/data/Layers_input_2D.h5" -O "Layers_input_2D.h5"
+        wget "https://github.com/OpendTect/OpendTect-ML-Dev/raw/main/webinars/2021-04-22/Examples/data/malenov_input_8x8x16_subsample_dBG.h5" -O "malenov_input_8x8x16_subsample_dBG.h5"
+        wget "https://github.com/OpendTect/OpendTect-ML-Dev/raw/main/webinars/2021-04-22/Examples/data/Log_-_density.h5" -O "Log_-_density.h5"
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names

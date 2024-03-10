@@ -27,7 +27,6 @@ setup(
         'odpy>=1.1.0',
         'scikit-learn>=0.24.2',
         'psutil>=5.7.0',
-        'tensorflow>=2.1.4',
         'torch>=1.9.0',
         'fastprogress>=1.0.0',
     ],
@@ -38,7 +37,7 @@ setup(
         'skl2onnx': ['skl2onnx>=1.0.0'],
         'xgboost': ['xgboost>=1.1.1'],
         'onnxruntime': ['onnxruntime-gpu>=1.0.0'],
-
+        'tensorflow': ['tensorflow>=2.1.4'],
     },
     classifiers=[
         'Development Status :: 5 - Production/Stable',

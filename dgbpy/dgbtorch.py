@@ -87,6 +87,8 @@ class SaveType(Enum):
 
 defsavetype = SaveType.Onnx.value
 
+defstoragetype = dgbhdf5.StorageType.LOCAL.value
+
 torch_infos = None
 
 torch_dict = {
@@ -103,6 +105,8 @@ torch_dict = {
     'type': None,
     'prefercpu': None,
     'savetype': defsavetype,
+    'storagetype': defstoragetype,
+    's3_bucket': None,
     'scale': dgbkeys.globalstdtypestr,
     'transform':default_transforms,
     'withtensorboard': withtensorboard,
@@ -380,7 +384,7 @@ def get_model_architecture(model, model_classname, infos):
     model_instance.load_state_dict(model)
   return model_instance, dummy_input
 
-def save( model, outfnm, infos, params=torch_dict ):
+def save( model, outfnm, infos, params=torch_dict ):  
   h5file = odhdf5.openFile( outfnm, 'w' )
   odhdf5.setAttr( h5file, 'backend', 'PyTorch' )
   odhdf5.setAttr( h5file, 'torch_version', torch.__version__ )

@@ -330,14 +330,7 @@ def test_apply_result____img2img_classes_gt_2_should_return_class_integers(data)
     save_model(model, f'{filename}.h5', info, pars)
     trained_model = load_model(f'{filename}.h5')
 
-    samples = data[dbk.xvaliddictstr]
-    isclassification = info[dbk.classdictstr]
-    withpred = True
-    withprobs = []
-    withconfidence = False
-    doprobabilities = len(withprobs) > 0
-
-    pred = dgbtorch.apply(trained_model, info, samples, None, isclassification, withpred, withprobs, withconfidence, doprobabilities)
+    a
 
     assert dbk.preddictstr in pred, 'prediction should be in the output result'
     prediction = pred[dbk.preddictstr]

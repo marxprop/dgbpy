@@ -298,7 +298,11 @@ class AvgStats():
         self.tot_mets = [0.] * len(self.metrics)
         
     @property
-    def all_stats(self): return [self.tot_loss.item()] + self.tot_mets
+    def all_stats(self):
+        try:        
+            return [self.tot_loss.item()] + self.tot_mets 
+        except:
+            return [self.tot_loss] + self.tot_mets
     @property
     def avg_stats(self): return [o/self.count for o in self.all_stats]
 
